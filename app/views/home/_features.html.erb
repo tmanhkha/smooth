@@ -1,0 +1,68 @@
+<%
+  features = [
+    {
+      n: "01",
+      title: "One link, many calendars",
+      body: "Connect Google, Outlook, iCloud. Smooth finds slots that work across all of them."
+    },
+    {
+      n: "02",
+      title: "Smart timezones",
+      body: "Visitors see their local time. You see yours. No more 3am surprises."
+    },
+    {
+      n: "03",
+      title: "Automatic reminders",
+      body: "Confirmation, 24-hour, and 1-hour nudges. Reduces no-shows by ~40%."
+    },
+    {
+      n: "04",
+      title: "Reschedule in one click",
+      body: "Clients change times themselves. You get notified. No email threads."
+    },
+    {
+      n: "05",
+      title: "Buffers & limits",
+      body: "15 minutes between calls. Max 6 a day. Set guardrails, not just slots."
+    },
+    {
+      n: "06",
+      title: "Beautiful by default",
+      body: "Your booking page looks like you spent a weekend on it. You didn't."
+    }
+  ]
+%>
+
+<section id="features" class="border-t border-border/60 py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="max-w-2xl">
+      <p class="text-xs uppercase tracking-[0.2em] text-coral">
+        What's inside
+      </p>
+
+      <h2 class="mt-4 font-display text-4xl font-medium text-ink md:text-5xl">
+        Everything Calendly does. Calmer.
+      </h2>
+    </div>
+
+    <div class="mt-16 overflow-hidden rounded-2xl bg-border grid gap-px md:grid-cols-2 lg:grid-cols-3">
+      <% features.each do |feature| %>
+        <div class="bg-background p-8 transition hover:bg-card">
+          <div class="flex items-baseline gap-3">
+            <span class="font-display text-sm text-coral">
+              <%= feature[:n] %>
+            </span>
+
+            <h3 class="font-display text-xl font-medium text-ink">
+              <%= feature[:title] %>
+            </h3>
+          </div>
+
+          <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+            <%= feature[:body] %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

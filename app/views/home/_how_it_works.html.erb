@@ -1,0 +1,53 @@
+<%
+  steps = [
+    {
+      title: "Set your hours",
+      body: "Tell Smooth when you're available. Recurring weekly schedule, with timezone math handled."
+    },
+    {
+      title: "Share your link",
+      body: "smooth.so/yourname. Stick it in your email signature, your bio, your invoices."
+    },
+    {
+      title: "Show up",
+      body: "Bookings appear on your calendar. Both parties get reminders. That's it."
+    }
+  ]
+%>
+
+<section id="how" class="border-y border-border bg-card py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="grid gap-16 lg:grid-cols-[1fr_2fr]">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-coral">
+          How it works
+        </p>
+
+        <h2 class="mt-4 font-display text-4xl font-medium leading-tight text-ink md:text-5xl">
+          Three steps. <br />
+          Zero friction.
+        </h2>
+      </div>
+
+      <ol class="space-y-10">
+        <% steps.each_with_index do |step, index| %>
+          <li class="flex gap-6 border-b border-border pb-10 last:border-0 last:pb-0">
+            <span class="font-display leading-none text-5xl font-light text-coral">
+              <%= format("%02d", index + 1) %>
+            </span>
+
+            <div>
+              <h3 class="font-display text-2xl font-medium text-ink">
+                <%= step[:title] %>
+              </h3>
+
+              <p class="mt-2 max-w-md text-muted-foreground">
+                <%= step[:body] %>
+              </p>
+            </div>
+          </li>
+        <% end %>
+      </ol>
+    </div>
+  </div>
+</section>

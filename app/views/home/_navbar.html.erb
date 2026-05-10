@@ -1,0 +1,26 @@
+<header class="absolute top-0 left-0 right-0 z-20">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+    <%= link_to root_path, class: "flex items-center gap-2" do %>
+      <div class="flex h-7 w-7 items-center justify-center rounded-md bg-ink">
+        <div class="h-2 w-2 rounded-full bg-coral"></div>
+      </div>
+
+      <span class="font-display text-xl font-medium text-ink">
+        Smooth
+      </span>
+    <% end %>
+
+    <nav class="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
+      <%= link_to "Features", "#features", class: "transition hover:text-ink" %>
+
+      <%= link_to "How it works", "#how", class: "transition hover:text-ink" %>
+
+      <%= link_to "Pricing", "#pricing", class: "transition hover:text-ink" %>
+    </nav>
+
+    <%= link_to "/book/demo",
+                class: "rounded-full bg-ink px-4 py-2 text-sm font-medium text-cream transition hover:bg-ink/90" do %>
+      Try a booking →
+    <% end %>
+  </div>
+</header>

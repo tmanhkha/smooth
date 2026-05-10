@@ -1,0 +1,374 @@
+<%
+  slots_by_day = {
+    0 => [],
+    1 => ["9:00", "9:30", "10:00", "10:30", "11:00", "13:00"],
+    2 => ["9:00", "11:00", "13:00", "14:00"],
+    3 => ["10:00", "11:00", "14:00"],
+    4 => ["9:00", "10:00", "13:00", "15:00"],
+    5 => ["9:00", "11:00"],
+    6 => []
+  }
+
+  today = Date.current
+  week_start = today.beginning_of_week(:monday)
+
+  display_name = params[:user].presence || "maya"
+%>
+
+<main
+  class="min-h-screen bg-background py-10 md:py-16"
+  data-controller="booking"
+>
+  <div class="mx-auto max-w-5xl px-6">
+
+    <%= link_to root_path,
+                class: "inline-flex items-center gap-2 text-xs text-muted-foreground transition hover:text-ink" do %>
+      ← Back to Slate
+    <% end %>
+
+    <div class="mt-6 overflow-hidden rounded-3xl border border-border bg-card shadow-[0_30px_80px_-40px_rgba(20,20,40,0.25)]">
+      <div class="grid md:grid-cols-[280px_1fr]">
+
+        <!-- SIDEBAR -->
+        <aside class="border-b border-border bg-background/60 p-8 md:border-b-0 md:border-r">
+
+          <div
+            class="h-14 w-14 rounded-full"
+            style="
+            background:
+              linear-gradient(
+                135deg,
+                  var(--coral),
+                  color-mix(in oklab, var(--sage) 80%, white)
+                );
+            "
+          ></div>
+
+          <p class="mt-4 text-xs uppercase tracking-wider text-muted-foreground">
+            Slate · <%= display_name.downcase %>
+          </p>
+
+          <h1 class="mt-1 font-display text-2xl font-medium text-ink">
+            <%= display_name.capitalize %> Chen
+          </h1>
+
+          <p class="mt-1 text-sm text-muted-foreground">
+            Product designer & advisor
+          </p>
+
+          <div class="mt-8 space-y-3 text-sm">
+
+            <div class="flex items-center justify-between border-b border-border/60 pb-2">
+              <span class="text-xs uppercase tracking-wider text-muted-foreground">
+                Duration
+              </span>
+
+              <span class="text-ink">
+                30 minutes
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-border/60 pb-2">
+              <span class="text-xs uppercase tracking-wider text-muted-foreground">
+                Format
+              </span>
+
+              <span class="text-ink">
+                Google Meet
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-border/60 pb-2">
+              <span class="text-xs uppercase tracking-wider text-muted-foreground">
+                Timezone
+              </span>
+
+              <span class="text-ink">
+                <%= Time.zone.name %>
+              </span>
+            </div>
+
+          </div>
+
+          <p class="mt-8 text-sm leading-relaxed text-muted-foreground">
+            A 30-minute conversation about your product,
+            your roadmap, and where I might help.
+          </p>
+
+        </aside>
+
+        <!-- CONTENT -->
+        <section class="p-6 md:p-10">
+
+          <!-- PICK STEP -->
+          <div data-booking-target="pickStep">
+
+            <!-- STEPPER -->
+            <div class="flex items-center gap-2 text-xs text-muted-foreground">
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[10px] text-cream">
+                  1
+                </span>
+
+                <span class="text-ink">
+                  Pick a time
+                </span>
+
+                <span class="mx-2 h-px w-6 bg-border"></span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[10px] text-muted-foreground">
+                  2
+                </span>
+
+                <span>
+                  Your details
+                </span>
+
+                <span class="mx-2 h-px w-6 bg-border"></span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[10px] text-muted-foreground">
+                  3
+                </span>
+
+                <span>
+                  Confirmed
+                </span>
+              </div>
+
+            </div>
+
+            <!-- CALENDAR -->
+            <div class="mt-8">
+
+              <div class="flex items-center justify-between">
+                <h2 class="font-display text-2xl font-medium text-ink">
+                  <%= today.strftime("%B %Y") %>
+                </h2>
+              </div>
+
+              <!-- DAYS -->
+              <div class="mt-5 grid grid-cols-7 gap-2">
+
+                <% (week_start..week_start + 6.days).each do |day| %>
+                  <% has_slots = slots_by_day[day.wday].present? %>
+
+                  <button
+                    data-action="click->booking#selectDay"
+                    data-day="<%= day.wday %>"
+                    data-date="<%= day.strftime('%A, %B %-d') %>"
+                    class="
+                      day-button group flex flex-col items-center
+                      rounded-xl border border-border
+                      bg-background p-2 transition
+                      hover:border-ink/40
+                      <%= 'opacity-30' unless has_slots %>
+                    "
+                    <%= 'disabled' unless has_slots %>
+                  >
+
+                    <span class="text-[10px] uppercase tracking-wider">
+                      <%= day.strftime('%a') %>
+                    </span>
+
+                    <span class="mt-1 font-display text-lg">
+                      <%= day.day %>
+                    </span>
+
+                    <% if day == today %>
+                      <span class="mt-0.5 h-1 w-1 rounded-full bg-coral"></span>
+                    <% end %>
+
+                  </button>
+
+                <% end %>
+
+              </div>
+
+              <!-- SLOT SECTION -->
+              <div class="mt-8">
+
+                <p
+                  class="text-sm text-muted-foreground"
+                  data-booking-target="selectedDate"
+                >
+                  Select a day
+                </p>
+
+                <div
+                  class="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4"
+                  data-booking-target="slots"
+                >
+                  <p class="col-span-full py-8 text-sm text-muted-foreground">
+                    Select a day to see availability.
+                  </p>
+                </div>
+
+                <button
+                  data-action="click->booking#continue"
+                  data-booking-target="continueButton"
+                  class="
+                    hidden mt-8 items-center gap-2
+                    rounded-full bg-ink px-6 py-3 text-sm
+                    font-medium text-cream transition
+                    hover:bg-ink/90
+                  "
+                >
+                  Continue →
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- FORM STEP -->
+          <div
+            class="hidden mt-8"
+            data-booking-target="form"
+          >
+
+            <div>
+              <h2 class="font-display text-2xl font-medium text-ink">
+                Almost there.
+              </h2>
+
+              <p
+                class="mt-1 text-sm text-muted-foreground"
+                data-booking-target="summary"
+              ></p>
+            </div>
+
+            <div class="mt-6 space-y-5">
+
+              <div>
+                <label class="text-xs uppercase tracking-wider text-muted-foreground">
+                  Your name
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Jane Doe"
+                  class="field mt-2"
+                  />
+              </div>
+
+              <div>
+                <label class="text-xs uppercase tracking-wider text-muted-foreground">
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  placeholder="jane@company.com"
+                  class="field mt-2"
+                  />
+              </div>
+
+              <div>
+                <label class="text-xs uppercase tracking-wider text-muted-foreground">
+                  What do you want to discuss?
+                </label>
+
+                <textarea
+                  rows="3"
+                  class="field mt-2"
+                  placeholder="A quick context line helps us make the call useful."
+                ></textarea>
+              </div>
+
+              <div class="flex items-center gap-3 pt-2">
+
+                <button
+                  data-action="click->booking#back"
+                  class="
+                    rounded-full border border-border
+                    bg-background px-5 py-2.5 text-sm
+                    transition hover:bg-secondary
+                  "
+                >
+                  ← Back
+                </button>
+
+                <button
+                  data-action="click->booking#confirm"
+                  class="
+                    rounded-full bg-ink px-6 py-2.5
+                    text-sm font-medium text-cream
+                    transition hover:bg-ink/90
+                  "
+                >
+                  Confirm booking
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- DONE -->
+          <div
+            class="hidden mt-12 text-center"
+            data-booking-target="done"
+          >
+
+            <div
+              class="
+                mx-auto flex h-14 w-14 items-center
+                justify-center rounded-full
+                bg-coral-soft text-2xl text-coral
+              "
+            >
+              ✓
+            </div>
+
+            <h2 class="mt-6 font-display text-3xl font-medium text-ink">
+              You're booked.
+            </h2>
+
+            <p class="mt-2 text-muted-foreground">
+              A confirmation is on its way.
+            </p>
+
+            <div
+              class="
+                mx-auto mt-8 max-w-sm rounded-2xl
+                border border-border bg-background
+                p-5 text-left
+              "
+            >
+
+              <p
+                class="
+                  text-xs uppercase tracking-wider
+                  text-muted-foreground
+                "
+                data-booking-target="doneDate"
+              ></p>
+
+              <p
+                class="mt-1 font-display text-xl text-ink"
+                data-booking-target="doneSlot"
+              ></p>
+
+              <p class="mt-1 text-sm text-muted-foreground">
+                with <%= display_name.capitalize %> Chen
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+
+  </div>
+</main>
