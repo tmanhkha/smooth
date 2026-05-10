@@ -1,0 +1,58 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
+development:
+  primary:
+    <<: *default
+    database: smooth_development
+  cache:
+    <<: *default
+    database: smooth_development_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: smooth_development_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: smooth_development_cable
+    migrations_paths: db/cable_migrate
+test:
+  primary:
+    <<: *default
+    database: smooth_test
+  cache:
+    <<: *default
+    database: smooth_test_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: smooth_test_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: smooth_test_cable
+    migrations_paths: db/cable_migrate
+production:
+  primary: &primary_production
+    <<: *default
+    database: smooth_production
+    username: smooth
+    password: <%= ENV["SMOOTH_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: smooth_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: smooth_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: smooth_production_cable
+    migrations_paths: db/cable_migrate
