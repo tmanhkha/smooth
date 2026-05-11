@@ -15,7 +15,8 @@ RSpec.describe HomeController, type: :request do
       user = create(:user)
 
       post session_path, params: { email_address: user.email_address, password: 'password' }
-      follow_redirect!
+      get root_path
+
       expect(response.body).to include('Log out')
       expect(response.body).not_to include('Sign in')
     end

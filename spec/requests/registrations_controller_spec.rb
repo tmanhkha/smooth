@@ -26,7 +26,7 @@ RSpec.describe RegistrationsController, type: :request do
       }.to change(User, :count).by(1)
         .and change(Session, :count).by(1)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(dashboard_path)
     end
 
     it 'renders full inline validation messages' do

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'home#index'
+  get '/dashboard', to: 'dashboard#show', as: :dashboard
+  get '/settings', to: 'settings#show', as: :settings
   get '/book/:user', to: 'bookings#show', as: :booking
 
   resource :session

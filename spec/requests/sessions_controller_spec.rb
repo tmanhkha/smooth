@@ -19,7 +19,7 @@ RSpec.describe SessionsController, type: :request do
         post session_path, params: { email_address: user.email_address, password: 'password' }
       }.to change(Session, :count).by(1)
 
-      expect(response).to redirect_to(root_url)
+      expect(response).to redirect_to(dashboard_url)
     end
 
     it 'renders inline errors for invalid credentials' do

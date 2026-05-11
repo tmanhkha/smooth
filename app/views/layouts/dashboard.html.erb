@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Overview - Smooth" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Smooth">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% nav_items = [
+      { to: dashboard_path, label: "Overview", icon: "M3 12l9-9 9 9M5 10v10h14V10" },
+      { to: "/bookings", label: "Bookings", icon: "M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" },
+      { to: "/availability", label: "Availability", icon: "M12 8v4l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+      { to: "/clients", label: "Clients", icon: "M16 11a4 4 0 10-8 0 4 4 0 008 0zM3 21a8 8 0 0118 0" },
+      { to: "/settings", label: "Settings", icon: "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" }
+    ] %>
+
+    <div class="min-h-screen bg-background text-foreground">
+      <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur">
+        <div class="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4">
+          <%= link_to root_path, class: "flex items-center gap-2" do %>
+            <div class="flex h-7 w-7 items-center justify-center rounded-md bg-ink">
+              <div class="h-2 w-2 rounded-full bg-coral"></div>
+            </div>
+            <span class="font-display text-xl font-medium text-ink">Smooth</span>
+          <% end %>
+
+          <div class="hidden max-w-md flex-1 px-8 md:block">
+            <div class="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm text-muted-foreground">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M21 21l-4.3-4.3"></path>
+              </svg>
+              <input placeholder="Search clients, bookings..." class="w-full bg-transparent outline-none placeholder:text-muted-foreground/70">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="button" class="hidden rounded-full border border-border bg-card px-4 py-2 text-sm text-ink transition hover:bg-muted sm:inline-flex">
+              Share booking link
+            </button>
+            <button type="button" aria-label="Notifications" class="relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-ink hover:bg-muted">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"></path>
+              </svg>
+              <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-coral"></span>
+            </button>
+            <%= link_to "MO", root_path, class: "flex h-9 w-9 items-center justify-center rounded-full bg-ink text-sm font-medium text-cream" %>
+          </div>
+        </div>
+      </header>
+
+      <div class="mx-auto grid max-w-[1400px] gap-8 px-6 py-8 lg:grid-cols-[220px_1fr]">
+        <aside class="hidden lg:block">
+          <nav class="sticky top-24 space-y-1 text-sm">
+            <% nav_items.each do |item| %>
+              <% active = request.path.start_with?(item[:to]) %>
+              <%= link_to item[:to],
+                          class: "group flex items-center gap-3 rounded-lg px-3 py-2 transition #{active ? 'bg-ink text-cream' : 'text-muted-foreground hover:bg-muted hover:text-ink'}" do %>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="<%= item[:icon] %>"></path>
+                </svg>
+                <span><%= item[:label] %></span>
+              <% end %>
+            <% end %>
+
+            <div class="mt-8 rounded-2xl border border-border bg-card p-4">
+              <p class="text-xs uppercase tracking-[0.14em] text-coral">Your link</p>
+              <p class="mt-2 truncate font-display text-sm text-ink">smooth.to/mira</p>
+              <button type="button" class="mt-3 w-full rounded-full bg-ink px-3 py-2 text-xs font-medium text-cream transition hover:bg-ink/90">
+                Copy link
+              </button>
+            </div>
+          </nav>
+        </aside>
+
+        <main class="min-w-0">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
