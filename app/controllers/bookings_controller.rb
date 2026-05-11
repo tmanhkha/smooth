@@ -1,4 +1,6 @@
 class BookingsController < ApplicationController
+  allow_unauthenticated_access
+
   def show
     @user = params[:user]
 

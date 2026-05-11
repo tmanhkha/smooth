@@ -1,0 +1,84 @@
+<% content_for :title, "Reset your Smooth password" %>
+<% content_for :head do %>
+  <meta name="description" content="Request a password reset link for your Smooth account.">
+<% end %>
+
+<main class="relative min-h-screen bg-background text-foreground">
+  <div class="grid min-h-screen lg:grid-cols-2">
+    <aside class="relative hidden overflow-hidden bg-ink text-cream lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <%= link_to root_path, class: "flex items-center gap-2" do %>
+        <div class="flex h-7 w-7 items-center justify-center rounded-md bg-cream">
+          <div class="h-2 w-2 rounded-full bg-coral"></div>
+        </div>
+        <span class="font-display text-xl font-medium">Smooth</span>
+      <% end %>
+
+      <div class="relative">
+        <div class="absolute -left-8 -top-16 h-64 w-64 rounded-full bg-coral/30 blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-sage/20 blur-3xl"></div>
+        <p class="relative font-display text-4xl leading-tight tracking-tight">
+          "Smooth quietly removed the part of my week I dreaded most &mdash;
+          <span class="text-coral"> scheduling.</span>"
+        </p>
+        <p class="relative mt-6 text-sm text-cream/70">
+          Mira Okafor &mdash; Independent Therapist
+        </p>
+      </div>
+
+      <div class="flex items-center gap-6 text-xs uppercase tracking-[0.18em] text-cream/50">
+        <span>Est. 2025</span>
+        <span class="h-px w-10 bg-cream/30"></span>
+        <span>Made for solo pros</span>
+      </div>
+    </aside>
+
+    <section class="flex min-h-screen flex-col px-6 py-10 sm:px-10 lg:px-16">
+      <div class="flex items-center justify-between lg:hidden">
+        <%= link_to root_path, class: "flex items-center gap-2" do %>
+          <div class="flex h-7 w-7 items-center justify-center rounded-md bg-ink">
+            <div class="h-2 w-2 rounded-full bg-coral"></div>
+          </div>
+          <span class="font-display text-xl font-medium text-ink">Smooth</span>
+        <% end %>
+      </div>
+
+      <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-10">
+        <p class="text-xs uppercase tracking-[0.18em] text-coral">Password reset</p>
+        <h1 class="mt-3 font-display text-4xl font-medium leading-[1.05] text-ink sm:text-5xl">
+          Get back into <em class="font-display italic text-coral">your account.</em>
+        </h1>
+        <p class="mt-4 text-sm text-muted-foreground">
+          Enter your work email and we will send you a secure reset link.
+        </p>
+
+        <div class="mt-10">
+          <% alert = flash[:alert] %>
+
+          <%= form_with url: passwords_path, class: "space-y-5" do |form| %>
+            <label class="block">
+              <span class="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">Email</span>
+              <%= form.email_field :email_address,
+                                   required: true,
+                                   autofocus: true,
+                                   autocomplete: "email",
+                                   placeholder: "you@studio.com",
+                                   value: params[:email_address],
+                                   aria: { invalid: alert.present?, describedby: ("password-reset-error" if alert.present?) },
+                                   class: "w-full rounded-xl border bg-card px-4 py-3 text-sm text-ink placeholder:text-muted-foreground/60 outline-none transition #{alert.present? ? 'border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-ink/40 focus:ring-2 focus:ring-coral/20'}" %>
+              <% if alert.present? %>
+                <p class="mt-2 text-sm font-medium text-red-600" id="password-reset-error"><%= alert %></p>
+              <% end %>
+            </label>
+
+            <%= form.submit "Email reset instructions", class: "w-full cursor-pointer rounded-full bg-ink px-5 py-3 text-sm font-medium text-cream transition hover:bg-ink/90" %>
+          <% end %>
+
+          <p class="mt-8 text-center text-sm text-muted-foreground">
+            Remembered your password?
+            <%= link_to "Sign in", new_session_path, class: "font-medium text-ink underline-offset-4 hover:underline" %>
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
