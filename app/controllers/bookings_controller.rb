@@ -8,7 +8,7 @@ class BookingsController < ApplicationController
       2 => %w[9:00 11:00],
       3 => %w[10:00 14:00],
       4 => %w[9:00 13:00],
-      5 => ["9:00"],
+      5 => ['9:00'],
       6 => []
     }
 
