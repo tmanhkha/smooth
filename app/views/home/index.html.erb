@@ -1,7 +1,7 @@
 <main class="relative min-h-screen bg-background text-foreground">
   <%= render "home/navbar" %>
   <%= render "home/hero" %>
-  <%= render "home/features" %>
-  <%= render "home/how_it_works" %>
+  <%= render "home/features", features: @features %>
+  <%= render "home/how_it_works", steps: @steps %>
   <%= render "home/cta" %>
 </main>

@@ -14,5 +14,4 @@ class BookingsController < ApplicationController
 
     @today = Date.current
   end
-
 end
