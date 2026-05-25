@@ -16,7 +16,7 @@ gem 'turbo-rails'
 
 # API responses and media processing
 gem 'jbuilder'
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 2.0'
 
 # Authentication and security
 gem 'bcrypt', '~> 3.1'
